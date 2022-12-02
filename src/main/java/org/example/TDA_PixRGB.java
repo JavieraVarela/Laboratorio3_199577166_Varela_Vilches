@@ -1,8 +1,6 @@
-package Laboratorio3;
+package org.example;
 
-import java.util.*;
-
-public class TDA_PixRGB extends Pixels{
+public class TDA_PixRGB extends Pixels {
 
     //Atributos
     private int r;
@@ -41,16 +39,30 @@ public class TDA_PixRGB extends Pixels{
 
     //Getters
 
-    public int getR(TDA_PixRGB rgb) {return Pixrgb.r;}
+    public int getR() {
+        return r;
+    }
 
-    public int getG(TDA_PixRGB rgb) {return Pixrgb.g;}
+    public int getG() {
+        return g;
+    }
 
-    public int getB(TDA_PixRGB rgb) {return Pixrgb.b;}
+    public int getB() {
+        return b;
+    }
 
     //Setters
 
-    public void setR(TDA_PixRGB rgb, int newr) {pixrgb.r = newr;}
+    public void setR(int r) {
+        this.r = r;
+    }
 
-    public void setG(TDA_PixRGB rgb, int newg) {pixrgb.g = newg;}
+    public void setG(int g) {
+        this.g = g;
+    }
 
-    public void setB(TDA_PixRGB rgb, int newb) {pixrgb.b = newb;}
+    public void setB(int b) {
+        this.b = b;
+    }
+
+}

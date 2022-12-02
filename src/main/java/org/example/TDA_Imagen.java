@@ -1,4 +1,4 @@
-package Laboratorio3;
+package org.example;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -179,7 +179,67 @@ public class TDA_Imagen {
     //________________________________________________________________________________________________________________
     /* 8. ImagetoHistogram
      Metodo que crea un histograma de la imagen.
-     Un histograma es una representación gráfica de la distribución de frecuencia de una variable. En este caso,
-     la variable es el color de los pixeles de la imagen. Para crear un histograma, se debe 
+     Un histograma es una representación gráfica de la distribución de frecuencia de una variable. En este caso, se
+     reconoce cuantas veces aparece un color en una imagen.
+     Se debe crear un metodo que permita obtener cuantas veces un elemento se repite en los pixeles de la imagen.
+     - Pixbit: Se debe contar cuantas veces aparece el color 0 y cuantas veces aparece el color 1.
+     - PixRGB: Se debe contar cuantas veces aparece repetido cada color (Rojo, Verde, Azul) de manera individual.
+     - PixHex: Se debe contar cuantas veces se repite un string.
+     */
+
+    public void ImagenToHistogram() {
+        if (IsBitmap(this)) {
+            int cero = 0;
+            int uno = 0;
+            for (Pixels p : pixeles) {
+                if (p.getBit(p) == 0) {
+                    cero++;
+                } else {
+                    uno++;
+                }
+            }
+            System.out.println("El color 0 aparece " + cero + " veces.");
+            System.out.println("El color 1 aparece " + uno + " veces.");
+        } else if (IsPixmap(this)) {
+            ArrayList<Integer> rojo = new ArrayList<Integer>(255);
+            ArrayList<Integer> verde = new ArrayList<Integer>(255);
+            ArrayList<Integer> azul = new ArrayList<Integer>(255);
+            for (Pixels p : pixeles) {
+                int r = p.getR(p);
+                int g = p.getG(p);
+                int b = p.getB(p);
+                rojo[r - 1]++;
+                verde[g - 1]++;
+                azul[b - 1]++;
+            }
+            for (int i = 0; i < 255; i++) {
+                if (rojo[i] != 0) {
+                    System.out.println("El color rojo " + i + 1 + " aparece " + rojo[i] + " veces.");
+                }
+                if (verde[i] != 0) {
+                    System.out.println("El color verde " + i + 1 + " aparece " + verde[i] + " veces.");
+                }
+                if (azul[i] != 0) {
+                    System.out.println("El color azul " + i + 1 + " aparece " + azul[i] + " veces.");
+                }
+            }
+        } else if (IsHexmap(this)) {
+            ArrayList<String> hex = new ArrayList<String>();
+            ArrayList<Integer> hexcount = new ArrayList<Integer>();
+            for (Pixels p : pixeles) {
+                String h = p.getHex(p);
+                if (hex.contains(h)) {
+                    int index = hex.indexOf(h);
+                    hexcount[index]++;
+                } else {
+                    hex.add(h);
+                    hexcount.add(1);
+                }
+            }
+            for (int i = 0; i < hex.size(); i++) {
+                System.out.println("El color " + hex.get(i) + " aparece " + hexcount.get(i) + " veces.");
+            }
+        }
+    }
 
 }

@@ -1,4 +1,4 @@
-package Laboratorio3;
+package org.example;
 
 import java.util.*;
 
@@ -30,10 +30,13 @@ public class TDA_Pixhex extends Pixels{
     }
 
     //Getters
-    public String getHex(TDA_Pixhex hex) {return Pixhex.hex;}
-    )
+
+    public String getHex() {
+        return hex;
+    }
 
     //Setters
-    public void setHex(TDA_Pixhex hex, String newhex) {pixhex.hex = newhex;}
-
+    public void setHex(String hex) {
+        this.hex = hex;
+    }
 }

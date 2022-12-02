@@ -1,4 +1,4 @@
-package Laboratorio3;
+package org.example;
 
 public abstract class Pixels {
 

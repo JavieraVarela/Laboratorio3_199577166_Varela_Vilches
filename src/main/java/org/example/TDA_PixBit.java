@@ -1,4 +1,4 @@
-package Laboratorio3;
+package org.example;
 
 import java.util.*;
 
@@ -32,8 +32,14 @@ public class TDA_Pixbit extends Pixels{
     }
 
     //Getters
-    public int getBit(TDA_Pixbit bit) {return Pixbit.bit;}
+
+    public int getBit() {
+        return Bit;
+    }
 
     // Setters
-    public void setBit(TDA_Pixbit bit, int newbit) {pixbit.bit = newbit;}
+
+    public void setBit(int bit) {
+        Bit = bit;
+    }
 }
