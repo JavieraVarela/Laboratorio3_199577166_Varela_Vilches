@@ -24,11 +24,7 @@ public class TDA_PixRGB extends Pixels {
     //1. IsInRange.
     //Metodo que verifica si un entero esta dentro del rango de valores permitidos. (0 < x < 255).
     public boolean IsInRange(int x) {
-        if (x > 0 && x < 255) {
-            return true;
-        } else {
-            return false;
-        }
+        return x > 0 && x < 255;
     }
 
     //2. IsPixRGB.

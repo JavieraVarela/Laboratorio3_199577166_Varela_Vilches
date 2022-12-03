@@ -2,13 +2,13 @@ package org.example;
 
 import java.util.*;
 
-public class TDA_Pixbit extends Pixels{
+public class TDA_PixBit extends Pixels{
 
     //Atributos
     private int Bit;
 
     //Constructor
-    public TDA_Pixbit(int x, int y, int depth, int bit) {
+    public TDA_PixBit(int x, int y, int depth, int bit) {
         super(x, y, depth);
         if (IsBit(bit)) {
             this.Bit = bit;

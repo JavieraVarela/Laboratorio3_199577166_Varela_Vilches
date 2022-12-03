@@ -22,11 +22,7 @@ public class TDA_Pixhex extends Pixels{
     //1. IsPixHex.
     //Metodo que verifica si un String es de un largo de 6 caracteres o menos.
     public boolean IsPixHex(String hex) {
-        if (hex.length() <= 6) {
-            return true;
-        } else {
-            return false;
-        }
+        return hex.length() <= 6;
     }
 
     //Getters

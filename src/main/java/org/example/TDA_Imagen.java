@@ -20,34 +20,30 @@ public class TDA_Imagen {
         this.pixeles = pixeles;
     }
 
-    public TDA_Imagen() {
-    }
-
-
     //Getters
-    public int getWidth(TDA_Imagen imagen) {
-        return imagen.Width;
+    public int getWidth() {
+        return this.Width;
     }
 
-    public int getHeight(TDA_Imagen imagen) {
-        return imagen.Height;
+    public int getHeight() {
+        return this.Height;
     }
 
-    public List<Pixels> getPixeles(TDA_Imagen imagen) {
-        return imagen.pixeles;
+    public List<Pixels> getPixeles() {
+        return this.pixeles;
     }
 
     //Setters
-    public void setWidth(TDA_Imagen imagen, int newwidth) {
-        imagen.Width = newwidth;
+    public void setWidth(int newwidth) {
+        this.Width = newwidth;
     }
 
-    public void setHeight(TDA_Imagen imagen, int newheight) {
-        imagen.Height = newheight;
+    public void setHeight(int newheight) {
+        this.Height = newheight;
     }
 
-    public void setPixeles(TDA_Imagen imagen, List<Pixels> newpixeles) {
-        imagen.pixeles = newpixeles;
+    public void setPixeles(List<Pixels> newpixeles) {
+        this.pixeles = newpixeles;
     }
 
     //Metodos
@@ -56,7 +52,7 @@ public class TDA_Imagen {
     // Metodo que verifica si la imagen esta compuesta por pixeles del tipo Pixbit.
     public boolean IsBitmap() {
         for (Pixels p : pixeles) {
-            if (p.getClass().getName().equals("Laboratorio3.TDA_Pixbit")) {
+            if (!p.getClass().getName().equals("org.example.TDA_PixBit")) {
                 return true;
             }
         }
@@ -68,7 +64,7 @@ public class TDA_Imagen {
     // Metodo que verifica si la imagen esta compuesta por pixeles del tipo PixRGB.
     public boolean IsPixmap() {
         for (Pixels p : pixeles) {
-            if (p.getClass().getName().equals("Laboratorio3.TDA_PixRGB")) {
+            if (!p.getClass().getName().equals("org.example.TDA_PixRGB")) {
                 return true;
             }
         }
@@ -82,7 +78,7 @@ public class TDA_Imagen {
     // Metodo que verifica si la imagen esta compuesta por pixeles del tipo PixHex.
     public boolean IsHexmap() {
         for (Pixels p : pixeles) {
-            if (p.getClass().getName().equals("Laboratorio3.TDA_Pixhex")) {
+            if (!p.getClass().getName().equals("org.example.TDA_PixHex")) {
                 return true;
             }
         }
@@ -97,12 +93,11 @@ public class TDA_Imagen {
     // horizontalmente, se debe seguir la siguiente formula:
     // Flip = (Anchura - 1) - X
 
-    public int z = getWidth(this) - 1;
-    public int newcoordx = z - p.getX(p);
-
     public void FlipH() {
+        int z = getWidth() - 1;
         for (Pixels p : pixeles) {
-            p.setX(p, newcoordx);
+            int newcoordx = z - p.getX();
+            p.setX(newcoordx);
         }
     }
     //________________________________________________________________________________________________________________
@@ -113,12 +108,11 @@ public class TDA_Imagen {
     // verticalmente, se debe seguir la siguiente formula:
     // Flip = (Altura - 1) - Y
 
-    public int z = getHeight(this) - 1;
-    public int newcoordy = z - p.getY(p);
-
     public void FlipV() {
+        int z = getHeight() - 1;
         for (Pixels p : pixeles) {
-            p.setY(p, newcoordy);
+            int newcoordy = z - p.getY();
+            p.setY(newcoordy);
         }
     }
 
@@ -137,11 +131,11 @@ public class TDA_Imagen {
     public void Crop(int x1, int x2, int y1, int y2) {
         List<Pixels> newpixeles = new ArrayList<Pixels>();
         for (Pixels p : pixeles) {
-            if (p.getX(p) > x1 && p.getX(p) < x2 && p.getY(p) > y1 && p.getY(p) < y2) {
+            if (p.getX() >= x1 && p.getX() <= x2 && p.getY() >= y1 && p.getY() <= y2) {
                 newpixeles.add(p);
             }
         }
-        setPixeles(this, newpixeles);
+        setPixeles(newpixeles);
     }
 
     //________________________________________________________________________________________________________________
@@ -160,20 +154,31 @@ public class TDA_Imagen {
     // Hex = [FF]
 
     public void RGBtoHex() {
-        List<Pixels> newpixeles = new ArrayList<Pixels>();
-        for (Pixels p : pixeles) {
-            if (IsPixmap(this)) {
-                int r = p.getR(p);
-                int g = p.getG(p);
-                int b = p.getB(p);
-                int newr = integer.toHexString(r);
-                int newg = integer.toHexString(g);
-                int newb = integer.toHexString(b);
-                Pixels newpixel = new TDA_Pixhex(newr, newg, newb);
-                newpixeles.add(newpixel);
+        if (IsBitmap()) {
+            List<Pixels> newpixeles = new ArrayList<>();
+            for (Pixels p : pixeles) {
+                if (IsPixmap()) {
+                    int r = ((TDA_PixRGB) p).getR();
+                    int g = ((TDA_PixRGB) p).getG();
+                    int b = ((TDA_PixRGB) p).getB();
+                    String newr = Integer.toHexString(r);
+                    String newg = Integer.toHexString(g);
+                    String newb = Integer.toHexString(b);
+                    if (newr.length() == 1) {
+                        newr = "0" + newr;
+                    }
+                    if (newg.length() == 1) {
+                        newg = "0" + newg;
+                    }
+                    if (newb.length() == 1) {
+                        newb = "0" + newb;
+                    }
+                    Pixels newpixel = new TDA_Pixhex(p.getX(), p.getY(), newr + newg + newb, p.getDepth());
+                    newpixeles.add(newpixel);
+                }
             }
+            setPixeles(newpixeles);
         }
-        setPixeles(this, newpixeles);
     }
 
     //________________________________________________________________________________________________________________
@@ -188,11 +193,11 @@ public class TDA_Imagen {
      */
 
     public void ImagenToHistogram() {
-        if (IsBitmap(this)) {
+        if (IsBitmap()) {
             int cero = 0;
             int uno = 0;
             for (Pixels p : pixeles) {
-                if (p.getBit(p) == 0) {
+                if (((TDA_PixBit) p).getBit() == 0) {
                     cero++;
                 } else {
                     uno++;
@@ -200,37 +205,43 @@ public class TDA_Imagen {
             }
             System.out.println("El color 0 aparece " + cero + " veces.");
             System.out.println("El color 1 aparece " + uno + " veces.");
-        } else if (IsPixmap(this)) {
+        } else if (IsPixmap()) {
             ArrayList<Integer> rojo = new ArrayList<Integer>(255);
             ArrayList<Integer> verde = new ArrayList<Integer>(255);
             ArrayList<Integer> azul = new ArrayList<Integer>(255);
+            for (int i = 0; i < 255; i++) {
+                rojo.add(0);
+                verde.add(0);
+                azul.add(0);
+            }
             for (Pixels p : pixeles) {
-                int r = p.getR(p);
-                int g = p.getG(p);
-                int b = p.getB(p);
-                rojo[r - 1]++;
-                verde[g - 1]++;
-                azul[b - 1]++;
+                int r = ((TDA_PixRGB) p).getR();
+                int g = ((TDA_PixRGB) p).getG();
+                int b = ((TDA_PixRGB) p).getB();
+                rojo.set(r - 1, rojo.get(r - 1) + 1);
+                verde.set(g - 1, verde.get(g - 1) + 1);
+                azul.set(b - 1, azul.get(b - 1) + 1);
             }
             for (int i = 0; i < 255; i++) {
-                if (rojo[i] != 0) {
-                    System.out.println("El color rojo " + i + 1 + " aparece " + rojo[i] + " veces.");
+                int value = i + 1;
+                if (rojo.get(i) != 0) {
+                    System.out.println("El color rojo " + value + " aparece " + rojo.get(i) + " veces.");
                 }
-                if (verde[i] != 0) {
-                    System.out.println("El color verde " + i + 1 + " aparece " + verde[i] + " veces.");
+                if (verde.get(i) != 0) {
+                    System.out.println("El color verde " + value + " aparece " + verde.get(i) + " veces.");
                 }
-                if (azul[i] != 0) {
-                    System.out.println("El color azul " + i + 1 + " aparece " + azul[i] + " veces.");
+                if (azul.get(i) != 0) {
+                    System.out.println("El color azul " + value + " aparece " + azul.get(i) + " veces.");
                 }
             }
-        } else if (IsHexmap(this)) {
+        } else if (IsHexmap()) {
             ArrayList<String> hex = new ArrayList<String>();
             ArrayList<Integer> hexcount = new ArrayList<Integer>();
             for (Pixels p : pixeles) {
-                String h = p.getHex(p);
+                String h = ((TDA_Pixhex) p).getHex();
                 if (hex.contains(h)) {
                     int index = hex.indexOf(h);
-                    hexcount[index]++;
+                    hexcount.set(index, hexcount.get(index) + 1);
                 } else {
                     hex.add(h);
                     hexcount.add(1);
@@ -242,4 +253,260 @@ public class TDA_Imagen {
         }
     }
 
+    //________________________________________________________________________________________________________________
+    /* 9. Rotate90
+     Metodo que rota la imagen 90 grados.
+     Para rotar la imagen en 90 grados, se debe seguir la regla del plano carteciano donde (x,y) -> (-y,x), donde las
+     coordenadas giran 90 grados a la derecha.
+     */
+
+    public void Rotate90() {
+        if (IsBitmap()) {
+            List<Pixels> newpixeles = new ArrayList<>();
+            for (Pixels p : pixeles) {
+                int newx = (p.getY() * (-1));
+                Pixels newpixel = new TDA_PixBit(newx, p.getX(), ((TDA_PixBit) p).getBit(), p.getDepth());
+                newpixeles.add(newpixel);
+            }
+            setPixeles(newpixeles);
+        } else if (IsPixmap()) {
+            List<Pixels> newpixeles = new ArrayList<>();
+            for (Pixels p : pixeles) {
+                int newx = (p.getY() * (-1));
+                Pixels newpixel = new TDA_PixRGB(newx, p.getX(), ((TDA_PixRGB) p).getR(), ((TDA_PixRGB) p).getG(), ((TDA_PixRGB) p).getB(), p.getDepth());
+                newpixeles.add(newpixel);
+            }
+            setPixeles(newpixeles);
+        } else if (IsHexmap()) {
+            List<Pixels> newpixeles = new ArrayList<>();
+            for (Pixels p : pixeles) {
+                int newx = (p.getY() * (-1));
+                Pixels newpixel = new TDA_Pixhex(newx, p.getX(), ((TDA_Pixhex) p).getHex(), p.getDepth());
+                newpixeles.add(newpixel);
+            }
+            setPixeles(newpixeles);
+        }
+    }
+
+    //________________________________________________________________________________________________________________
+    /* 10. Compress
+    Metodo que permite comprimir una imagen.
+    Para lograr comprimir una imagen se debe contar cuantas veces se repite un color dentro de un pixel y devolver el
+    que menos veces se repita.
+    */
+
+    public void Compress() {
+        if (IsBitmap()) {
+            List<Pixels> newpixeles = new ArrayList<Pixels>();
+            int cero = 0;
+            int uno = 0;
+            for (Pixels p : pixeles) {
+                if (((TDA_PixBit) p).getBit() == 0) {
+                    cero++;
+                } else {
+                    uno++;
+                }
+            }
+            for (Pixels p : pixeles) {
+                if (cero < uno) {
+                    if (((TDA_PixBit) p).getBit() == 0) {
+                        Pixels newpixel = new TDA_PixBit(p.getX(), p.getY(), 0, p.getDepth());
+                        newpixeles.add(newpixel);
+                    }
+                }
+                if (cero > uno) {
+                    if (((TDA_PixBit) p).getBit() == 1) {
+                        Pixels newpixel = new TDA_PixBit(p.getX(), p.getY(), 1, p.getDepth());
+                        newpixeles.add(newpixel);
+                    }
+                }
+            }
+            setPixeles(newpixeles);
+        }
+        if (IsPixmap()) {
+            List<Pixels> newpixeles = new ArrayList<Pixels>();
+            ArrayList<Integer> rojo = new ArrayList<Integer>(255);
+            ArrayList<Integer> verde = new ArrayList<Integer>(255);
+            ArrayList<Integer> azul = new ArrayList<Integer>(255);
+            for (int i = 0; i < 255; i++) {
+                rojo.add(0);
+                verde.add(0);
+                azul.add(0);
+            }
+            for (Pixels p : pixeles) {
+                int r = ((TDA_PixRGB) p).getR();
+                int g = ((TDA_PixRGB) p).getG();
+                int b = ((TDA_PixRGB) p).getB();
+                rojo.set(r - 1, rojo.get(r - 1) + 1);
+                verde.set(g - 1, verde.get(g - 1) + 1);
+                azul.set(b - 1, azul.get(b - 1) + 1);
+            }
+            int minr = 0;
+            int ming = 0;
+            int minb = 0;
+            for (int i = 0; i < 255; i++) {
+                if (rojo.get(i) < rojo.get(minr)) {
+                    minr = i;
+                }
+                if (verde.get(i) < verde.get(ming)) {
+                    ming = i;
+                }
+                if (azul.get(i) < azul.get(minb)) {
+                    minb = i;
+                }
+            }
+            for (Pixels p : pixeles) {
+                if (((TDA_PixRGB) p).getR() == minr + 1 && ((TDA_PixRGB) p).getG() == ming + 1 && ((TDA_PixRGB) p).getB() == minb + 1) {
+                    Pixels newpixel = new TDA_PixRGB(p.getX(), p.getY(), minr + 1, ming + 1, minb + 1, p.getDepth());
+                    newpixeles.add(newpixel);
+                }
+            }
+            setPixeles(newpixeles);
+        }
+        if (IsHexmap()) {
+            List<Pixels> newpixeles = new ArrayList<Pixels>();
+            ArrayList<String> hex = new ArrayList<String>();
+            ArrayList<Integer> hexcount = new ArrayList<Integer>();
+            for (Pixels p : pixeles) {
+                String h = ((TDA_Pixhex) p).getHex();
+                if (hex.contains(h)) {
+                    int index = hex.indexOf(h);
+                    hexcount.set(index, hexcount.get(index) + 1);
+                } else {
+                    hex.add(h);
+                    hexcount.add(1);
+                }
+            }
+            int min = 0;
+            for (int i = 0; i < hex.size(); i++) {
+                if (hexcount.get(i) < hexcount.get(min)) {
+                    min = i;
+                }
+            }
+            for (Pixels p : pixeles) {
+                if (((TDA_Pixhex) p).getHex().equals(hex.get(min))) {
+                    Pixels newpixel = new TDA_Pixhex(p.getX(), p.getY(), hex.get(min), p.getDepth());
+                    newpixeles.add(newpixel);
+                }
+            }
+            setPixeles(newpixeles);
+        }
+    }
+
+
+    //________________________________________________________________________________________________________________
+    /* 11. IsCompress
+    Metodo que permite saber si una imagen esta comprimida o no.
+    Para lograr saber si una imagen esta comprimida o no, se debe comparar que todos los pixeles tengan el mismo color.
+     */
+
+    public boolean IsCompress() {
+        if (IsBitmap()) {
+            int bit = ((TDA_PixBit) pixeles.get(0)).getBit();
+            for (Pixels p : pixeles) {
+                if (((TDA_PixBit) p).getBit() != bit) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        if (IsPixmap()) {
+            int r = ((TDA_PixRGB) pixeles.get(0)).getR();
+            int g = ((TDA_PixRGB) pixeles.get(0)).getG();
+            int b = ((TDA_PixRGB) pixeles.get(0)).getB();
+            for (Pixels p : pixeles) {
+                if (((TDA_PixRGB) p).getR() != r || ((TDA_PixRGB) p).getG() != g || ((TDA_PixRGB) p).getB() != b) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        if (IsHexmap()) {
+            String hex = ((TDA_Pixhex) pixeles.get(0)).getHex();
+            for (Pixels p : pixeles) {
+                if (!((TDA_Pixhex) p).getHex().equals(hex)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    //________________________________________________________________________________________________________________
+    /* 12. ChangePixel
+    Metodo que recibe un pixel y lo cambia por otro pixel dentro de la imaagen.
+     */
+
+    public void ChangePixel(Pixels oldpixel, Pixels newpixel) {
+        if (IsBitmap()) {
+            if (oldpixel.getDepth() == 1 && newpixel.getDepth() == 1) {
+                if (pixeles.contains(oldpixel)) {
+                    int index = pixeles.indexOf(oldpixel);
+                    pixeles.set(index, newpixel);
+                }
+            }
+        }
+        if (IsPixmap()) {
+            if (oldpixel.getDepth() == 3 && newpixel.getDepth() == 3) {
+                if (pixeles.contains(oldpixel)) {
+                    int index = pixeles.indexOf(oldpixel);
+                    pixeles.set(index, newpixel);
+                }
+            }
+        }
+        if (IsHexmap()) {
+            if (oldpixel.getDepth() == 6 && newpixel.getDepth() == 6) {
+                if (pixeles.contains(oldpixel)) {
+                    int index = pixeles.indexOf(oldpixel);
+                    pixeles.set(index, newpixel);
+                }
+            }
+        }
+    }
+
+    //________________________________________________________________________________________________________________
+    /* 13. InvertColorBit
+    Metodo que invierte el bit dentro de PixBit.
+     */
+
+    public void InvertColorBit() {
+        if (IsBitmap()) {
+            for (Pixels p : pixeles) {
+                int bit = ((TDA_PixBit) p).getBit();
+                if (bit == 0) {
+                    bit = 1;
+                } else {
+                    bit = 0;
+                }
+                Pixels newpixel = new TDA_PixBit(p.getX(), p.getY(), bit, p.getDepth());
+                ChangePixel(p, newpixel);
+            }
+        }
+    }
+
+    //________________________________________________________________________________________________________________
+    /* 14. InvertColorRGB
+    Metodo que invierte el valor R, G y B dentro de un PixRGB.
+    Para lograr esto al valor numerico 255 se debe restar el valor R, G y B correspondiente.
+    NewR = 255 - r
+    NewG = 255 - g
+    NewB = 255 - b
+     */
+    public void InvertColorRGB(){
+        if (IsPixmap()){
+            List<Pixels> newpixeles = new ArrayList<Pixels>();
+            for (Pixels p: pixeles){
+                int r = ((TDA_PixRGB)p).getR();
+                int g = ((TDA_PixRGB)p).getG();
+                int b = ((TDA_PixRGB)p).getB();
+                int newR = (255 - r);
+                int newG = (255 - g);
+                int newB = (255 - b);
+                Pixels newpixel = new TDA_PixRGB(p.getX(), p.getY(), newR, newG, newB, p.getDepth());
+                newpixeles.add(newpixel);
+            }
+            setPixeles(newpixeles);
+        }
+    }
 }

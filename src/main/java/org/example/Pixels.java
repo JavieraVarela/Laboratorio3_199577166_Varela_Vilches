@@ -15,25 +15,24 @@ public abstract class Pixels {
         this.setDepth(depth);
     }
 
-
+    // Getters
     public int getX() {
         return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
     }
 
     public int getY() {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public int getDepth() {
         return depth;
+    }
+
+    // Setters
+    public void setX(int x) {this.x = x;}
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public void setDepth(int depth) {
