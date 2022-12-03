@@ -22,7 +22,10 @@ public class TDA_PixBit extends Pixels{
     //1. Bit.
     //Metodo que verifica si un entero es 0 o 1.
     public boolean IsBit(int bit) {
-        return bit == 0 || bit == 1;
+        if (bit == 0 || bit == 1){
+            return true;
+        }
+        return false;
     }
 
     //2. IsPixBit.

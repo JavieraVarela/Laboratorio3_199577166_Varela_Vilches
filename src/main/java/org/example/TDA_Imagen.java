@@ -53,10 +53,10 @@ public class TDA_Imagen {
     public boolean IsBitmap() {
         for (Pixels p : pixeles) {
             if (!p.getClass().getName().equals("org.example.TDA_PixBit")) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
     //________________________________________________________________________________________________________________
 
@@ -65,10 +65,10 @@ public class TDA_Imagen {
     public boolean IsPixmap() {
         for (Pixels p : pixeles) {
             if (!p.getClass().getName().equals("org.example.TDA_PixRGB")) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
 
@@ -79,10 +79,10 @@ public class TDA_Imagen {
     public boolean IsHexmap() {
         for (Pixels p : pixeles) {
             if (!p.getClass().getName().equals("org.example.TDA_PixHex")) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     //________________________________________________________________________________________________________________
@@ -258,30 +258,34 @@ public class TDA_Imagen {
      Metodo que rota la imagen 90 grados.
      Para rotar la imagen en 90 grados, se debe seguir la regla del plano carteciano donde (x,y) -> (-y,x), donde las
      coordenadas giran 90 grados a la derecha.
+     (width - 1 ) - x
      */
 
     public void Rotate90() {
         if (IsBitmap()) {
             List<Pixels> newpixeles = new ArrayList<>();
             for (Pixels p : pixeles) {
-                int newx = (p.getY() * (-1));
-                Pixels newpixel = new TDA_PixBit(newx, p.getX(), ((TDA_PixBit) p).getBit(), p.getDepth());
+                int newx = p.getY();
+                int newy = (getHeight()-1) - p.getX();
+                Pixels newpixel = new TDA_PixBit(newx, newy, p.getDepth(),((TDA_PixBit) p).getBit());
                 newpixeles.add(newpixel);
             }
             setPixeles(newpixeles);
         } else if (IsPixmap()) {
             List<Pixels> newpixeles = new ArrayList<>();
             for (Pixels p : pixeles) {
-                int newx = (p.getY() * (-1));
-                Pixels newpixel = new TDA_PixRGB(newx, p.getX(), ((TDA_PixRGB) p).getR(), ((TDA_PixRGB) p).getG(), ((TDA_PixRGB) p).getB(), p.getDepth());
+                int newx = p.getY();
+                int newy = (getHeight()-1) - p.getX();
+                Pixels newpixel = new TDA_PixRGB(newx, newy, ((TDA_PixRGB) p).getR(), ((TDA_PixRGB) p).getG(), ((TDA_PixRGB) p).getB(), p.getDepth());
                 newpixeles.add(newpixel);
             }
             setPixeles(newpixeles);
         } else if (IsHexmap()) {
             List<Pixels> newpixeles = new ArrayList<>();
             for (Pixels p : pixeles) {
-                int newx = (p.getY() * (-1));
-                Pixels newpixel = new TDA_Pixhex(newx, p.getX(), ((TDA_Pixhex) p).getHex(), p.getDepth());
+                int newx = p.getY();
+                int newy = (getHeight()-1) - p.getX();
+                Pixels newpixel = new TDA_Pixhex(newx, newy, ((TDA_Pixhex) p).getHex(), p.getDepth());
                 newpixeles.add(newpixel);
             }
             setPixeles(newpixeles);
@@ -297,7 +301,7 @@ public class TDA_Imagen {
 
     public void Compress() {
         if (IsBitmap()) {
-            List<Pixels> newpixeles = new ArrayList<Pixels>();
+            List<Pixels> newpixeles = new ArraysList<Pixels>();
             int cero = 0;
             int uno = 0;
             for (Pixels p : pixeles) {
@@ -310,13 +314,13 @@ public class TDA_Imagen {
             for (Pixels p : pixeles) {
                 if (cero < uno) {
                     if (((TDA_PixBit) p).getBit() == 0) {
-                        Pixels newpixel = new TDA_PixBit(p.getX(), p.getY(), 0, p.getDepth());
+                        Pixels newpixel = new TDA_PixBit(p.getX(), p.getY(), p.getDepth(),0);
                         newpixeles.add(newpixel);
                     }
                 }
                 if (cero > uno) {
                     if (((TDA_PixBit) p).getBit() == 1) {
-                        Pixels newpixel = new TDA_PixBit(p.getX(), p.getY(), 1, p.getDepth());
+                        Pixels newpixel = new TDA_PixBit(p.getX(), p.getY(), p.getDepth(),1);
                         newpixeles.add(newpixel);
                     }
                 }
@@ -479,7 +483,7 @@ public class TDA_Imagen {
                 } else {
                     bit = 0;
                 }
-                Pixels newpixel = new TDA_PixBit(p.getX(), p.getY(), bit, p.getDepth());
+                Pixels newpixel = new TDA_PixBit(p.getX(), p.getY(), p.getDepth(), bit);
                 ChangePixel(p, newpixel);
             }
         }

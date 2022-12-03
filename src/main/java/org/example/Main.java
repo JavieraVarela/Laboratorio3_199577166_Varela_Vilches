@@ -58,11 +58,11 @@ public class Main {
 
         TDA.ImagenToHistogram();
 
-        Pixels p6 = new TDA_PixBit(1, 1, 1, 1);
-        Pixels p7 = new TDA_PixBit(2, 2, 2, 0);
-        Pixels p8 = new TDA_PixBit(3, 3, 3, 1);
-        Pixels p9 = new TDA_PixBit(4, 4, 4, 0);
-        Pixels p10 = new TDA_PixBit(5, 5, 5, 1);
+        Pixels p6 = new TDA_PixBit(0, 0, 1, 1);
+        Pixels p7 = new TDA_PixBit(1, 1, 2, 0);
+        Pixels p8 = new TDA_PixBit(2, 2, 2, 1);
+        Pixels p9 = new TDA_PixBit(3, 3, 4, 0);
+        Pixels p10 = new TDA_PixBit(4, 4, 4, 1);
 
         List<Pixels> pixeles2 = new ArrayList<>();
         pixeles2.add(p6);
@@ -76,7 +76,30 @@ public class Main {
         System.out.println(TDA2.IsHexmap());
 
         System.out.println("Peo");
+        /*
+        System.out.println(TDA2.getPixeles().get(0).getX());
+        System.out.println(TDA2.getPixeles().get(0).getY());
+        TDA2.Rotate90();
+        System.out.println(TDA2.getPixeles().get(0).getX());
+        System.out.println(TDA2.getPixeles().get(0).getY());
 
-        TDA2.ImagenToHistogram();
+        System.out.println("Peo");
+
+         */
+        /*
+        System.out.println("Peo");
+        TDA2.Compress();
+        System.out.println("Peo");
+        */
+        System.out.println(TDA2.IsCompress());
+
+
+        /*
+        TDA2.Rotate90();
+
+
+        TDA2.Compress();
+        TDA2.IsCompress();
+        */
     }
 }
