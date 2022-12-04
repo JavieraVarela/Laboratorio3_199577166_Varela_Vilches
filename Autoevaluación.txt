@@ -1,0 +1,25 @@
+Autoevaluación:
+Método.				Grado de alcance.
+TDA image - Constructor		1
+TDA pixbit - Constructor	1
+TDA pixhex - Constructor	1
+TDA pixrgb – Constructor 	1
+Menu - Clase			0
+isBitmap – Método		1
+Ispixmap - Método		1 
+isHex   - Método		1
+flipH - Método			1
+flipV - Método			1
+Crop - Método			1
+imageRGBToHex – Método		1
+imageToHistogram – Método	1
+imageRotate90 – Método		1
+Compress – Método		1
+changePixel – Método		1
+invertColorBit - Método		1 
+invertColorRGB - Método		1
+Iscompressed – Método		1
+imageToString - Método		0
+imageDepthLayers - Método	0
+imageDecompress - Método	0
+

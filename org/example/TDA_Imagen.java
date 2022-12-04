@@ -78,7 +78,7 @@ public class TDA_Imagen {
     // Metodo que verifica si la imagen esta compuesta por pixeles del tipo PixHex.
     public boolean IsHexmap() {
         for (Pixels p : pixeles) {
-            if (!p.getClass().getName().equals("org.example.TDA_PixHex")) {
+            if (!p.getClass().getName().equals("org.example.TDA_Pixhex")) {
                 return false;
             }
         }
@@ -154,7 +154,7 @@ public class TDA_Imagen {
     // Hex = [FF]
 
     public void RGBtoHex() {
-        if (IsBitmap()) {
+        if (IsPixmap()) {
             List<Pixels> newpixeles = new ArrayList<>();
             for (Pixels p : pixeles) {
                 if (IsPixmap()) {
@@ -301,7 +301,7 @@ public class TDA_Imagen {
 
     public void Compress() {
         if (IsBitmap()) {
-            List<Pixels> newpixeles = new ArraysList<Pixels>();
+            List<Pixels> newpixeles = new ArrayList<>();
             int cero = 0;
             int uno = 0;
             for (Pixels p : pixeles) {
@@ -511,6 +511,22 @@ public class TDA_Imagen {
                 newpixeles.add(newpixel);
             }
             setPixeles(newpixeles);
+        }
+    }
+    //________________________________________________________________________________________________________________
+    /*15. print
+    Función utilizada solo para imprimir pixeles por pantalla*/
+    public void print(){
+        for(Pixels p: getPixeles()){
+            if(IsBitmap()){
+                System.out.println("x:" + p.getX()+" y:"+p.getY()+ " profunidad:"+p.getDepth()+" bit:" + ((TDA_PixBit)p).getBit());
+            }   
+            else if(IsPixmap()){
+                System.out.println("x:" + p.getX()+" y:"+p.getY()+ " profunidad:"+p.getDepth()+" R:" + ((TDA_PixRGB)p).getR()+" G:" + ((TDA_PixRGB)p).getG()+" B:" + ((TDA_PixRGB)p).getB());
+            }
+            else if(IsHexmap()){
+                System.out.println("x:" + p.getX()+" y:"+p.getY()+ " profunidad:"+p.getDepth()+" Hex:" + ((TDA_Pixhex)p).getHex());
+            }
         }
     }
 }
